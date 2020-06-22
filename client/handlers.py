@@ -3,7 +3,7 @@ from telebot import types
 import psycopg2
 bot = telebot.TeleBot('1123182125:AAGSp0qrIbpwo9Je4Lj-zAGA0OwsBq8S7jI')
 w_bot = telebot.TeleBot('914404855:AAEoc0ye_05EMpMaD5m43kytpkPhOL54pHQ')
-
+print('CCCCCLIIIIEEEENNNNTTTT')
 users={}
 zakazi={}
 to_base=lambda s:"'"+str(s)+"'"
