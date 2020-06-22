@@ -1,6 +1,6 @@
 import client.handlers as client
 import worker.handlers as worker
-import multiprocessing
+import threading
 import config as cf
 print('start')
 def start():
@@ -11,7 +11,7 @@ def start2():
 
     client.start_bot(cf)
 
-t = multiprocessing.Process(target=start)
+t =  threading.Thread(target=start)
 t.start()
-b = multiprocessing.Process(target=start2)
+b =  threading.Thread(target=start2)
 b.start()
