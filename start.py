@@ -2,6 +2,7 @@ import client.handlers as client
 import worker.handlers as worker
 import multiprocessing
 import config as cf
+print('start')
 def start():
     worker.start_bot(cf)
 def start2():
