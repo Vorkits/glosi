@@ -4,8 +4,11 @@ import multiprocessing
 import config as cf
 print('start')
 def start():
+    print('s1')
     worker.start_bot(cf)
 def start2():
+    print('s2')
+
     client.start_bot(cf)
 
 t = multiprocessing.Process(target=start)
