@@ -109,9 +109,9 @@ def start_bot(config):
             mes="""Имя-{}
 Город-{}
 Номер-{}
-Ссылка на переписку-[inline mention of a user](tg://user?id={})
+Ссылка на переписку-[Ссылка](tg://user?id={})
 """.format(data[1],data[0],data[2],data[3])
-            bot.send_message(message.from_user.id,mes,parse_mode="Markdown")
+            bot.send_message(message.from_user.id,mes,parse_mode="Markdown" )
         # if 'place order' in message.data:
         #     mes='Выберите категорию в которой вам нужно получить услугу(смайлик)'
         #     # инструкция
