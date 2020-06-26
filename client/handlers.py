@@ -89,6 +89,34 @@ def start_bot(config):
             zakazi[message.from_user.username]['description']=message.text
             f=bot.send_message(message.from_user.id,'Напишите,сколько вы готовы за это заплатить.💰(если вы не знаете, отправьте "-")')
             bot.register_next_step_handler(f,price_finish)
+        if 'change personal' in message.data:
+            markup=types.InlineKeyboardMarkup()
+            markup.add(types.InlineKeyboardButton(text='Изменить номер телефона',callback_data='changes,phone'))
+            markup.add(types.InlineKeyboardButton(text='Изменить имя',callback_data='changes,name')) 
+            markup.add(types.InlineKeyboardButton(text='Изменить город',callback_data='change,city'))
+            f=bot.send_message(message.from_user.id,'Что вы хотите изменить? Нажмите на соответствуюущую кнопку🔽',reply_markup=markup)
+        if 'changes' in message.data:
+            def change_data(message,do):
+                try:
+                    sql_query('UPDATE users WHERE tid={} SET {}={}'.format(message.from_user.id,do,message.text))
+                    markup=types.InlineKeyboardMarkup()
+                    markup.add(types.InlineKeyboardButton(text='Разместить заявку еще раз',callback_data='place order'))
+                    markup.add(types.InlineKeyboardButton(text='Изменить личные данные',callback_data='change personal')) 
+                    bot.send_message(message.from_user.id,'Успешно',reply_markup=markup)
+                except Exception as e:
+                    print(e)
+            f=False
+            do=message.data.split(',')[1]
+            if do=='city':
+                f=bot.send_message(message.from_user.id,'Выбери свой город ниже🔽',reply_markup=reply_city())
+            else:
+                
+                rep={
+                    'name':'Свое имя',
+                    'phone':'Свой номер'
+                }
+                f=bot.send_message(message.from_user.id,'Напиши мне {} '.format(rep[do]),reply_markup=types.ReplyKeyboardRemove())
+            bot.register_next_step_handler(f,lambda message:change_data(message,do))
 
         if 'category' in message.data:
             cat=message.data.replace('category','')
