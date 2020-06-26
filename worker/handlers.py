@@ -109,7 +109,7 @@ def start_bot(config):
             mes="""Имя-{}
 Город-{}
 Номер-{}
-Ссылка на переписку-@{}
+Ссылка на переписку-[inline mention of a user](tg://user?id={})
 """.format(data[1],data[0],data[2],data[3])
             bot.send_message(message.from_user.id,mes)
         # if 'place order' in message.data:

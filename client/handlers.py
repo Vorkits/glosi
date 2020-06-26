@@ -146,7 +146,7 @@ def start_bot(config):
             phone=sq[0][2]
             sq=sql_query('SELECT tid from workers WHERE category={} AND city={}'.format(to_base(zakazi[message.from_user.username]['category']),to_base(city)))
             markup=types.InlineKeyboardMarkup()
-            markup.add(types.InlineKeyboardButton(text='Просмотреть контакты',callback_data='show{},{},{},{}'.format(city,name,phone,message.from_user.username)))
+            markup.add(types.InlineKeyboardButton(text='Просмотреть контакты',callback_data='show{},{},{},{}'.format(city,name,phone,message.from_user.id)))
             mes="""
             Новая заявка
             
