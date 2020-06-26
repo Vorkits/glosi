@@ -18,8 +18,8 @@ def sql_query(sql):
         cur.execute(sql)
         f=cur.fetchall()
         conn.close()
-    except:
-        print ("Cannot insert")
+    except Exception as e:
+        print (e)
     try:
         conn.close()
     except:
