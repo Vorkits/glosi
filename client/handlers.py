@@ -98,7 +98,7 @@ def start_bot(config):
         if 'changes' in message.data:
             def change_data(message,do):
                 try:
-                    sql_query('UPDATE users WHERE tid={} SET {}={}'.format(to_base(message.from_user.id),do,to_base(message.text)))
+                    sql_query('UPDATE users SET {}={} WHERE tid={} '.format(do,to_base(message.text),to_base(message.from_user.id)))
                     markup=types.InlineKeyboardMarkup()
                     markup.add(types.InlineKeyboardButton(text='Разместить заявку еще раз',callback_data='place order'))
                     markup.add(types.InlineKeyboardButton(text='Изменить личные данные',callback_data='change personal')) 
