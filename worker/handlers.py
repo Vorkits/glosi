@@ -107,7 +107,7 @@ def start_bot(config):
             data=message.data.replace('show','').split(',')[1]
             sq=sql_query('SELECT * FROM orders WHERE id={}'.format(to_base(data)))
             sq=sq[0]
-            print(sq[3])
+            data=sq[3].split(',')
             
             mes="""Имя-{}
 Город-{}
