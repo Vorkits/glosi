@@ -93,7 +93,7 @@ def start_bot(config):
             markup=types.InlineKeyboardMarkup()
             markup.add(types.InlineKeyboardButton(text='Изменить номер телефона',callback_data='changes,phone'))
             markup.add(types.InlineKeyboardButton(text='Изменить имя',callback_data='changes,name')) 
-            markup.add(types.InlineKeyboardButton(text='Изменить город',callback_data='change,city'))
+            markup.add(types.InlineKeyboardButton(text='Изменить город',callback_data='changes,city'))
             f=bot.send_message(message.from_user.id,'Что вы хотите изменить? Нажмите на соответствуюущую кнопку🔽',reply_markup=markup)
         if 'changes' in message.data:
             def change_data(message,do):
