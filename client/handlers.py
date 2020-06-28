@@ -1,9 +1,15 @@
 import telebot
 from telebot import types
 import psycopg2
+import sqlite3
+conn = sqlite3.connect("mydatabase.db")
 bot = telebot.TeleBot('1123182125:AAGSp0qrIbpwo9Je4Lj-zAGA0OwsBq8S7jI')
 w_bot = telebot.TeleBot('914404855:AAEoc0ye_05EMpMaD5m43kytpkPhOL54pHQ')
 print('CCCCCLIIIIEEEENNNNTTTTccz')
+import string
+import random
+def id_generator(size=10, chars=string.ascii_uppercase + string.digits):
+    return ''.join(random.choice(chars) for _ in range(size))
 users={}
 zakazi={}
 to_base=lambda s:"'"+str(s)+"'"
@@ -145,9 +151,12 @@ def start_bot(config):
             name=sq[0][1]
             phone=sq[0][2]
             sq=sql_query('SELECT tid from workers WHERE category={}'.format(to_base(zakazi[message.from_user.username]['category'])))
-            markup=types.InlineKeyboardMarkup()
+            rstr=id_generator()
+            markup=types.InlineKeyboardMarkup(types.InlineKeyboardButton(text='Просмотреть контакты',callback_data='show,{}'.format(rstr)))
             print(sq)
-            markup.add(types.InlineKeyboardButton(text='Просмотреть контакты',callback_data='show'))
+            data='{},{},{},{}'.format(city,name,phone,message.from_user.id)
+            sql_query("""INSERT INTO orders VALUES({},{},'{}',{})""".format(to_base(rstr),to_base(message.from_user.id),to_base(data)))
+            markup.add(types.InlineKeyboardButton(text='Просмотреть контакты',callback_data=''))
             print('show{},{},{},{}'.format(city,name,phone,message.from_user.id))
             mes="""
             Новая заявка
