@@ -152,7 +152,8 @@ def start_bot(config):
             phone=sq[0][2]
             sq=sql_query('SELECT tid from workers WHERE category={}'.format(to_base(zakazi[message.from_user.username]['category'])))
             rstr=id_generator()
-            markup=types.InlineKeyboardMarkup(types.InlineKeyboardButton(text='Просмотреть контакты',callback_data='show,{}'.format(rstr)))
+            markup=types.InlineKeyboardMarkup()
+            markup.add(types.InlineKeyboardButton(text='Просмотреть контакты',callback_data='show,{}'.format(rstr)))
             print(sq)
             data='{},{},{},{}'.format(city,name,phone,message.from_user.id)
             sql_query("""INSERT INTO orders VALUES({},{},{},{})""".format(to_base(rstr),to_base(message.from_user.id),to_base('{}'),to_base(data)))
