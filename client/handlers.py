@@ -148,6 +148,7 @@ def start_bot(config):
             markup=types.InlineKeyboardMarkup()
             print(sq)
             markup.add(types.InlineKeyboardButton(text='Просмотреть контакты',callback_data='show{},{},{},{}'.format(city,name,phone,message.from_user.id)))
+            print('show{},{},{},{}'.format(city,name,phone,message.from_user.id))
             mes="""
             Новая заявка
             
