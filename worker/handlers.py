@@ -105,8 +105,11 @@ def start_bot(config):
             f=bot.send_message(message.from_user.id,'Подписка на наш сервис оформленна, в этот чат вам будут приходить заявки от клиентов. Изменить свои данные вы можете по кнопке ниже🔽',reply_markup=markup)
             users.pop(message.from_user.username,1)
         if 'show' in message.data :
-            data=message.data.replace('show','').split(',')
-            print(data)
+            data=message.data.replace('show','').split(',')[1]
+            sq=sql_query('SELECT * FROM orders WHERE id={}'.format(to_base(data)))
+            sq=sq[0]
+            print(sq[3])
+            
             mes="""Имя-{}
 Город-{}
 Номер-{}
