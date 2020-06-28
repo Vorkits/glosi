@@ -67,7 +67,7 @@ def start_bot(config):
             m=bot.send_message(message.from_user.id, mes,reply_markup=types.ReplyKeyboardRemove())
             bot.register_next_step_handler(m,phone_city)
         if message.text=='Зарегистрироваться':
-            mes='Введите свое имя'
+            mes='Введите свое ФИО'
             print(message)
             m=bot.send_message(message.from_user.id, mes,reply_markup=types.ReplyKeyboardRemove())
             bot.register_next_step_handler(m,name_phone)
