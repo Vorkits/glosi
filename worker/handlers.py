@@ -106,6 +106,7 @@ def start_bot(config):
             users.pop(message.from_user.username,1)
         if 'show' in message.data :
             data=message.data.replace('show','').split(',')
+            print(data)
             mes="""Имя-{}
 Город-{}
 Номер-{}
