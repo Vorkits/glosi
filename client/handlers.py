@@ -158,7 +158,7 @@ def start_bot(config):
             city=sq[0][0]
             name=sq[0][1]
             phone=sq[0][2]
-            if zakazi[message.from_user.id]['choise']:
+            if zakazi[message.from_user.id]['choice']:
                 sq=sql_query('SELECT tid from workers WHERE category={}'.format(to_base(zakazi[message.from_user.id]['category'])))
             else:
                 sq=sql_query('SELECT tid from workers WHERE category={} AND city={}'.format(to_base(zakazi[message.from_user.id]['category']),to_base(city)))
