@@ -66,8 +66,8 @@ def start_bot(config):
             users[message.from_user.id]={
                 'name':message.text,
                 'phone':'',
-                'city':''
-                
+                'city':'',
+                'choice':0
             }
             mes='Приятно познакомиться, {}. Отправь мне свой номер телефона.\n(если вы не хотите, чтобы исполнители связывались с вами по номеру телефона, оставьте поле пустым)'.format(message.text)
             m=bot.send_message(message.from_user.id, mes,reply_markup=types.ReplyKeyboardRemove())
@@ -80,8 +80,8 @@ def start_bot(config):
         
     @bot.callback_query_handler(func = lambda call: True) 
     def add(message):
-        def price_finish(message):
-            zakazi[message.from_user.id]['price']=message.text
+        if 'choice' in message.data and message.from_user.id in zakazi:
+            zakazi[message.from_user.id]['choice']=int(message.data[7])
             mes="""Ваша заявка-{}
 Цена-{}
 Категория-{}""".format(zakazi[message.from_user.id]['description'],zakazi[message.from_user.id]['price'],zakazi[message.from_user.id]['category'])
@@ -90,11 +90,18 @@ def start_bot(config):
 
             markup.add(types.InlineKeyboardButton(text='Отмена❌',callback_data='otmena'))
             f=bot.send_message(message.from_user.id,mes,reply_markup=markup)
+        def price_choise(message):
+            zakazi[message.from_user.id]['price']=message.text
+            mes='Хотите ли вы получать заявки от исполнителей с других городов?'
+            markup=types.InlineKeyboardMarkup()
+            markup.add(types.InlineKeyboardButton(text='Да',callback_data='choice,1'))
+            markup.add(types.InlineKeyboardButton(text='Нет',callback_data='choice,0'))
+
 
         def desc_price(message):
             zakazi[message.from_user.id]['description']=message.text
             f=bot.send_message(message.from_user.id,'Напишите,сколько вы готовы за это заплатить.💰(если вы не знаете, отправьте "-")')
-            bot.register_next_step_handler(f,price_finish)
+            bot.register_next_step_handler(f,price_choise)
         if 'change personal' in message.data:
             markup=types.InlineKeyboardMarkup()
             markup.add(types.InlineKeyboardButton(text='Изменить номер телефона',callback_data='changes,phone'))
@@ -146,11 +153,15 @@ def start_bot(config):
             markup.add(types.InlineKeyboardButton(text='Изменить личные данные',callback_data='change personal')) 
 
             f=bot.send_message(message.from_user.id,mes,reply_markup=markup)
+            
             sq=sql_query('SELECT city,name,phone from users WHERE tid={}'.format(to_base(message.from_user.id)))
             city=sq[0][0]
             name=sq[0][1]
             phone=sq[0][2]
-            sq=sql_query('SELECT tid from workers WHERE category={}'.format(to_base(zakazi[message.from_user.id]['category'])))
+            if zakazi[message.from_user.id]['choise']:
+                sq=sql_query('SELECT tid from workers WHERE category={}'.format(to_base(zakazi[message.from_user.id]['category'])))
+            else:
+                sq=sql_query('SELECT tid from workers WHERE category={} AND city={}'.format(to_base(zakazi[message.from_user.id]['category']),to_base(city)))
             rstr=id_generator()
             markup=types.InlineKeyboardMarkup()
             markup.add(types.InlineKeyboardButton(text='Просмотреть контакты',callback_data='show,{}'.format(rstr)))
