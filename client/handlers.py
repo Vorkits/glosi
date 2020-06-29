@@ -51,19 +51,19 @@ def start_bot(config):
     @bot.message_handler(content_types=['text'])
     def text(message):
         def city_finish(message):
-            users[message.from_user.username]['city']=message.text
-            sql_query('INSERT INTO users (name,phone,city,username,tid) VALUES ({},{},{},{},{})'.format(to_base(users[message.from_user.username]['name']),to_base(users[message.from_user.username]['phone']),to_base(users[message.from_user.username]['city']),to_base(message.from_user.username),to_base(message.from_user.id)))
+            users[message.from_user.id]['city']=message.text
+            sql_query('INSERT INTO users (name,phone,city,username,tid) VALUES ({},{},{},{},{})'.format(to_base(users[message.from_user.id]['name']),to_base(users[message.from_user.id]['phone']),to_base(users[message.from_user.id]['city']),to_base(message.from_user.username),to_base(message.from_user.id)))
             mes='Теперь вы можете выбрать категорию в которой вам нужно получить услугу🛠'
-            users.pop(message.from_user.username,1)
+            users.pop(message.from_user.id,1)
             m=bot.send_message(message.from_user.id, mes,reply_markup=config.get_categoryes())
         def phone_city(message):
-            users[message.from_user.username]['phone']=message.text
+            users[message.from_user.id]['phone']=message.text
             mes='Спасибо, теперь выбери свой город из предложенных ниже🔽'
             # инструкция
             m=bot.send_message(message.from_user.id, mes,reply_markup=reply_city())
             bot.register_next_step_handler(m,city_finish)
         def name_phone(message):
-            users[message.from_user.username]={
+            users[message.from_user.id]={
                 'name':message.text,
                 'phone':'',
                 'city':''
@@ -81,10 +81,10 @@ def start_bot(config):
     @bot.callback_query_handler(func = lambda call: True) 
     def add(message):
         def price_finish(message):
-            zakazi[message.from_user.username]['price']=message.text
+            zakazi[message.from_user.id]['price']=message.text
             mes="""Ваша заявка-{}
 Цена-{}
-Категория-{}""".format(zakazi[message.from_user.username]['description'],zakazi[message.from_user.username]['price'],zakazi[message.from_user.username]['category'])
+Категория-{}""".format(zakazi[message.from_user.id]['description'],zakazi[message.from_user.id]['price'],zakazi[message.from_user.id]['category'])
             markup=types.InlineKeyboardMarkup()
             markup.add(types.InlineKeyboardButton(text='Разместить заявку',callback_data='plae'))
 
@@ -92,7 +92,7 @@ def start_bot(config):
             f=bot.send_message(message.from_user.id,mes,reply_markup=markup)
 
         def desc_price(message):
-            zakazi[message.from_user.username]['description']=message.text
+            zakazi[message.from_user.id]['description']=message.text
             f=bot.send_message(message.from_user.id,'Напишите,сколько вы готовы за это заплатить.💰(если вы не знаете, отправьте "-")')
             bot.register_next_step_handler(f,price_finish)
         if 'change personal' in message.data:
@@ -126,7 +126,7 @@ def start_bot(config):
 
         if 'category' in message.data:
             cat=message.data.replace('category','')
-            zakazi[message.from_user.username]={'category':cat,'price':'','description':''}
+            zakazi[message.from_user.id]={'category':cat,'price':'','description':''}
             f=bot.send_message(message.from_user.id,'Опишите, какая вам нужна услуга🛠',reply_markup=types.ReplyKeyboardRemove())
             bot.register_next_step_handler(f,desc_price)
         if 'place order' in message.data:
@@ -139,7 +139,7 @@ def start_bot(config):
             markup.add(types.InlineKeyboardButton(text='Разместить заявку еще раз',callback_data='place order'))
             markup.add(types.InlineKeyboardButton(text='Изменить личные данные',callback_data='change personal')) 
             f=bot.send_message(message.from_user.id,mes,reply_markup=markup)
-        if 'plae' in message.data and message.from_user.username in zakazi:
+        if 'plae' in message.data and message.from_user.id in zakazi:
             mes='Заявка отправленна исполнителям, они в кратчайшее время свяжутся с вами.\nСпасибо что выбрали нас!'
             markup=types.InlineKeyboardMarkup()
             markup.add(types.InlineKeyboardButton(text='Разместить заявку еще раз',callback_data='place order'))
@@ -150,7 +150,7 @@ def start_bot(config):
             city=sq[0][0]
             name=sq[0][1]
             phone=sq[0][2]
-            sq=sql_query('SELECT tid from workers WHERE category={}'.format(to_base(zakazi[message.from_user.username]['category'])))
+            sq=sql_query('SELECT tid from workers WHERE category={}'.format(to_base(zakazi[message.from_user.id]['category'])))
             rstr=id_generator()
             markup=types.InlineKeyboardMarkup()
             markup.add(types.InlineKeyboardButton(text='Просмотреть контакты',callback_data='show,{}'.format(rstr)))
@@ -163,7 +163,7 @@ def start_bot(config):
             
 Описание-{}
 Предложенная стоимость-{}
-Город-{}""".format(to_base(zakazi[message.from_user.username]['description']),to_base(zakazi[message.from_user.username]['price']),to_base(city))
+Город-{}""".format(to_base(zakazi[message.from_user.id]['description']),to_base(zakazi[message.from_user.id]['price']),to_base(city))
             used=[]
             for i in sq:
                 
@@ -171,7 +171,7 @@ def start_bot(config):
                 if id not in used:
                     w_bot.send_message(id,mes,reply_markup=markup)
                 used.append(id)
-            zakazi.pop(message.from_user.username)
+            zakazi.pop(message.from_user.id)
                 
             
 

@@ -43,19 +43,19 @@ def start_bot(config):
     @bot.message_handler(content_types=['text'])
     def text(message):
         def city_finish(message):
-            users[message.from_user.username]['city']=message.text
+            users[message.from_user.id]['city']=message.text
             # sql_query('INSERT INTO users (name,phone,city) VALUES ({},{},{})'.format(to_base(users[message.from_user.username]['name']),to_base(users[message.from_user.username]['phone']),to_base(users[message.from_user.username]['city'])))
             mes='Теперь вы можете выбрать категорию, по которой хотите получать заказы.'
             # users.pop(message.from_user.username,1)
             m=bot.send_message(message.from_user.id, mes,reply_markup=config.get_categoryes())
         def phone_city(message):
-            users[message.from_user.username]['phone']=message.text
+            users[message.from_user.id]['phone']=message.text
             mes='Спасибо, теперь выбери свой город из предложенных ниже🔽'
             # инструкция
             m=bot.send_message(message.from_user.id, mes,reply_markup=reply_city())
             bot.register_next_step_handler(m,city_finish)
         def name_phone(message):
-            users[message.from_user.username]={
+            users[message.from_user.id]={
                 'name':message.text,
                 'phone':'',
                 'city':'',
@@ -89,23 +89,23 @@ def start_bot(config):
 #             f=bot.send_message(message.from_user.id,'Напишите,сколько вы готовы за это заплатить.(если вы не знаете, отправьте "-")')
 #             bot.register_next_step_handler(f,price_finish)
 
-        if 'category' in message.data:
+        if 'category' in message.data and message.from_user.id in users:
             cat=message.data.replace('category','')
-            users[message.from_user.username]['category']=cat
+            users[message.from_user.id]['category']=cat
             markup=types.InlineKeyboardMarkup()
             markup.add(types.InlineKeyboardButton(text='Согласен',callback_data='personal'))
             f=bot.send_message(message.from_user.id,'Согласны ли вы на обработку ваших персональных данных?',reply_markup=markup)
             
-        if 'personal' in message.data and message.from_user.username in users :
+        if 'personal' in message.data and message.from_user.id in users :
             markup=types.InlineKeyboardMarkup()
             
-            sql_query('INSERT INTO workers (name,phone,city,category,username,tid) VALUES ({},{},{},{},{},{})'.format(to_base(users[message.from_user.username]['name']),to_base(users[message.from_user.username]['phone']),to_base(users[message.from_user.username]['city']),to_base(users[message.from_user.username]['category']),to_base(message.from_user.username),to_base(message.from_user.id)))
+            sql_query('INSERT INTO workers (name,phone,city,category,username,tid) VALUES ({},{},{},{},{},{})'.format(to_base(users[message.from_user.id]['name']),to_base(users[message.from_user.id]['phone']),to_base(users[message.from_user.id]['city']),to_base(users[message.from_user.id]['category']),to_base(message.from_user.id),to_base(message.from_user.id)))
             markup.add(types.InlineKeyboardButton(text='Изменить личные данные',callback_data='change data'))
             f=bot.send_message(message.from_user.id,'Подписка на наш сервис оформленна, в этот чат вам будут приходить заявки от клиентов. Изменить свои данные вы можете по кнопке ниже🔽',reply_markup=markup)
-            users.pop(message.from_user.username,1)
+            users.pop(message.from_user.id,1)
         if 'show' in message.data :
-            data=message.data.replace('show','').split(',')[1]
-            sq=sql_query('SELECT * FROM orders WHERE id={}'.format(to_base(data)))
+            dat=message.data.replace('show','').split(',')[1]
+            sq=sql_query('SELECT * FROM orders WHERE id={}'.format(to_base(dat)))
             sq=sq[0]
             data=sq[3].split(',')
             
@@ -114,7 +114,9 @@ def start_bot(config):
 Номер-{}
 Ссылка на переписку-[Ссылка](tg://user?id={})
 """.format(data[1],data[0],data[2],data[3])
-            bot.send_message(message.from_user.id,mes,parse_mode="Markdown" )
+            bot.send_message(message.from_user.id,mes,parse_mode="Markdown")
+            sq=sql_query("""UPDATE orders SET workers = array_append(workers,{}) WHERE id={}""".format(to_base(message.from_user.id),to_base(dat)))
+
         # if 'place order' in message.data:
         #     mes='Выберите категорию в которой вам нужно получить услугу(смайлик)'
         #     # инструкция
