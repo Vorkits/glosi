@@ -96,7 +96,7 @@ def start_bot(config):
             markup=types.InlineKeyboardMarkup()
             markup.add(types.InlineKeyboardButton(text='Да',callback_data='choice,1'))
             markup.add(types.InlineKeyboardButton(text='Нет',callback_data='choice,0'))
-
+            f=bot.send_message(message.from_user.id,mes,reply_markup=markup)
 
         def desc_price(message):
             zakazi[message.from_user.id]['description']=message.text
