@@ -155,8 +155,8 @@ def start_bot(config):
             markup=types.InlineKeyboardMarkup()
             markup.add(types.InlineKeyboardButton(text='Просмотреть контакты',callback_data='show,{}'.format(rstr)))
             print(sq)
-            data='{},{},{},{}'.format(city,name,phone,message.from_user.id)
-            sql_query("""INSERT INTO orders VALUES({},{},{},{})""".format(to_base(rstr),to_base(message.from_user.id),to_base('{}'),to_base(data)))
+            data='{},{},{},{},{}'.format(city,name,phone,message.from_user.id,to_base(zakazi[message.from_user.id]['description']))
+            sql_query("""INSERT INTO orders VALUES({},{},{},{},{})""".format(to_base(rstr),to_base(message.from_user.id),to_base('{}'),to_base(data),0))
             print('show{},{},{},{}'.format(city,name,phone,message.from_user.id))
             mes="""
             Новая заявка
