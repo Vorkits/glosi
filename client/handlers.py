@@ -184,7 +184,19 @@ def start_bot(config):
                 used.append(id)
             zakazi.pop(message.from_user.id)
                 
-            
+        if 'feed' in message.data:
+            markup=types.InlineKeyboardMarkup()
+            markup.add(types.InlineKeyboardButton(text='⭐',callback_data='star,1'))
+            markup.add(types.InlineKeyboardButton(text='⭐⭐',callback_data='star,2'))
+            markup.add(types.InlineKeyboardButton(text='⭐⭐⭐',callback_data='star,3'))
+            markup.add(types.InlineKeyboardButton(text='⭐⭐⭐⭐',callback_data='star,4'))
+            markup.add(types.InlineKeyboardButton(text='⭐⭐⭐⭐⭐',callback_data='star,5'))
+            bot.send_message(message.from_user.id,'Какую оценку вы бы хотели поставить ему?',reply_markup=markup)
+        if 'star' in message.data:
+            markup=types.InlineKeyboardMarkup()
+            markup.add(types.InlineKeyboardButton(text='Разместить заявку еще раз',callback_data='place order'))
+            markup.add(types.InlineKeyboardButton(text='Изменить личные данные',callback_data='change personal')) 
+            bot.send_message(message.from_user.id,'Спасибо,ваш отзыв важен для нас.',reply_markup=markup)
 
 
     bot.polling(none_stop=True)
