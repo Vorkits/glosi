@@ -113,8 +113,10 @@ def start_bot(config):
                 try:
                     sql_query('UPDATE users SET {}={} WHERE tid={} '.format(do,to_base(message.text),to_base(message.from_user.id)))
                     markup=types.InlineKeyboardMarkup()
-                    markup.add(types.InlineKeyboardButton(text='Разместить заявку еще раз',callback_data='place order'))
-                    markup.add(types.InlineKeyboardButton(text='Изменить личные данные',callback_data='change personal')) 
+                     markup.add(types.InlineKeyboardButton(text='Разместить заявку еще раз',callback_data='place order'))
+                    markup.add(types.InlineKeyboardButton(text='Изменить личные данные',callback_data='change personal'))
+                    markup.add(types.InlineKeyboardButton(text='Подписаться на наши соц-сети',callback_data='socset'))
+                    markup.add(types.InlineKeyboardButton(text='Стать исполнителем',callback_data='ispo')) 
                     bot.send_message(message.from_user.id,'Успешно',reply_markup=markup)
                 except Exception as e:
                     print(e)
@@ -172,7 +174,9 @@ def start_bot(config):
             mes='Заявка отправленна исполнителям, они в кратчайшее время свяжутся с вами.\nСпасибо что выбрали нас!'
             markup=types.InlineKeyboardMarkup()
             markup.add(types.InlineKeyboardButton(text='Разместить заявку еще раз',callback_data='place order'))
-            markup.add(types.InlineKeyboardButton(text='Изменить личные данные',callback_data='change personal')) 
+            markup.add(types.InlineKeyboardButton(text='Изменить личные данные',callback_data='change personal'))
+            markup.add(types.InlineKeyboardButton(text='Подписаться на наши соц-сети',callback_data='socset'))
+            markup.add(types.InlineKeyboardButton(text='Стать исполнителем',callback_data='ispo')) 
 
             f=bot.send_message(message.from_user.id,mes,reply_markup=markup)
             
@@ -209,17 +213,20 @@ def start_bot(config):
             zakazi.pop(message.from_user.id)
                 
         if 'feed' in message.data:
-            markup=types.InlineKeyboardMarkup()
-            markup.add(types.InlineKeyboardButton(text='⭐',callback_data='star,1'))
-            markup.add(types.InlineKeyboardButton(text='⭐⭐',callback_data='star,2'))
-            markup.add(types.InlineKeyboardButton(text='⭐⭐⭐',callback_data='star,3'))
-            markup.add(types.InlineKeyboardButton(text='⭐⭐⭐⭐',callback_data='star,4'))
-            markup.add(types.InlineKeyboardButton(text='⭐⭐⭐⭐⭐',callback_data='star,5'))
-            bot.send_message(message.from_user.id,'Какую оценку вы бы хотели поставить ему?',reply_markup=markup)
+            if not 'not' in message.data:
+                markup=types.InlineKeyboardMarkup()
+                markup.add(types.InlineKeyboardButton(text='⭐',callback_data='star,1'))
+                markup.add(types.InlineKeyboardButton(text='⭐⭐',callback_data='star,2'))
+                markup.add(types.InlineKeyboardButton(text='⭐⭐⭐',callback_data='star,3'))
+                markup.add(types.InlineKeyboardButton(text='⭐⭐⭐⭐',callback_data='star,4'))
+                markup.add(types.InlineKeyboardButton(text='⭐⭐⭐⭐⭐',callback_data='star,5'))
+                bot.send_message(message.from_user.id,'Какую оценку вы бы хотели поставить ему?',reply_markup=markup)
         if 'star' in message.data:
             markup=types.InlineKeyboardMarkup()
             markup.add(types.InlineKeyboardButton(text='Разместить заявку еще раз',callback_data='place order'))
-            markup.add(types.InlineKeyboardButton(text='Изменить личные данные',callback_data='change personal')) 
+            markup.add(types.InlineKeyboardButton(text='Изменить личные данные',callback_data='change personal'))
+            markup.add(types.InlineKeyboardButton(text='Подписаться на наши соц-сети',callback_data='socset'))
+            markup.add(types.InlineKeyboardButton(text='Стать исполнителем',callback_data='ispo')) 
             bot.send_message(message.from_user.id,'Спасибо,ваш отзыв важен для нас.',reply_markup=markup)
 
 
