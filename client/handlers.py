@@ -158,7 +158,7 @@ def start_bot(config):
             markup.add(types.InlineKeyboardButton(text='Стать исполнителем',callback_data='ispo')) 
             f=bot.send_message(message.from_user.id,mes,reply_markup=markup)
         if 'ispo' in message.data:
-            mes='Чтобы стать исполнителем, напишите этуму боту- @glosi_work_bot'
+            mes='Чтобы стать исполнителем, напишите этуму боту- @Glosi_work_bot'
             markup=types.InlineKeyboardMarkup()
             markup.add(types.InlineKeyboardButton(text='Разместить заявку еще раз',callback_data='place order'))
             markup.add(types.InlineKeyboardButton(text='Изменить личные данные',callback_data='change personal'))
