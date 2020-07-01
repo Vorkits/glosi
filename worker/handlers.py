@@ -119,7 +119,7 @@ def start_bot(config):
             markup.add(types.InlineKeyboardButton(text='Изменить личные данные',callback_data='change data'))
             markup.add(types.InlineKeyboardButton(text='Наши соц-сети',callback_data='socset'))
             markup.add(types.InlineKeyboardButton(text='Оставить заявку',callback_data='ispo'))
-            f=bot.send_message(message.from_user.id,mes,reply_markup=markup)
+            f=bot.send_message(message.from_user.id,mes)
         if 'ispo' in message.data:
             mes='Чтобы стать заказчиком, напишите этуму боту- @Glosi_bot'
             markup=types.InlineKeyboardMarkup()
