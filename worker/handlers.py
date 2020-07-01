@@ -5,6 +5,12 @@ bot = telebot.TeleBot('914404855:AAEoc0ye_05EMpMaD5m43kytpkPhOL54pHQ')
 users={}
 zakazi={}
 to_base=lambda s:"'"+str(s)+"'"
+def reply_city():
+    markup=types.ReplyKeyboardMarkup(one_time_keyboard = True)
+    cities=['Алматы','Астана(Нур-Султан)','Караганда','Актау','Шымкент','Другой']
+    for i in cities:
+        markup.add(i)
+    return markup
 def sql_query(sql):
     f=''
     try:
@@ -101,8 +107,27 @@ def start_bot(config):
             
             sql_query('INSERT INTO workers (name,phone,city,category,username,tid) VALUES ({},{},{},{},{},{})'.format(to_base(users[message.from_user.id]['name']),to_base(users[message.from_user.id]['phone']),to_base(users[message.from_user.id]['city']),to_base(users[message.from_user.id]['category']),to_base(message.from_user.id),to_base(message.from_user.id)))
             markup.add(types.InlineKeyboardButton(text='Изменить личные данные',callback_data='change data'))
+            markup.add(types.InlineKeyboardButton(text='Наши соц-сети',callback_data='socset'))
+            markup.add(types.InlineKeyboardButton(text='Оставить заявку',callback_data='ispo'))
+
             f=bot.send_message(message.from_user.id,'Подписка на наш сервис оформленна, в этот чат вам будут приходить заявки от клиентов. Изменить свои данные вы можете по кнопке ниже🔽',reply_markup=markup)
             users.pop(message.from_user.id,1)
+            
+        if 'socset' in message.data:
+            mes='Текст с соц-сетями'
+            markup=types.InlineKeyboardMarkup()
+            markup.add(types.InlineKeyboardButton(text='Изменить личные данные',callback_data='change data'))
+            markup.add(types.InlineKeyboardButton(text='Наши соц-сети',callback_data='socset'))
+            markup.add(types.InlineKeyboardButton(text='Оставить заявку',callback_data='ispo'))
+            f=bot.send_message(message.from_user.id,mes,reply_markup=markup)
+        if 'ispo' in message.data:
+            mes='Чтобы стать исполнителем, напишите этуму боту- @glosi_work_bot'
+            markup=types.InlineKeyboardMarkup()
+            markup.add(types.InlineKeyboardButton(text='Изменить личные данные',callback_data='change data'))
+            markup.add(types.InlineKeyboardButton(text='Наши соц-сети',callback_data='socset'))
+            markup.add(types.InlineKeyboardButton(text='Оставить заявку',callback_data='ispo'))
+            f=bot.send_message(message.from_user.id,mes,reply_markup=markup)
+            
         if 'show' in message.data :
             dat=message.data.replace('show','').split(',')[1]
             sq=sql_query('SELECT * FROM orders WHERE id={}'.format(to_base(dat)))
@@ -128,6 +153,36 @@ def start_bot(config):
         #     markup.add(types.InlineKeyboardButton(text='Изменить личные данные',callback_data='change personal')) 
         #     f=bot.send_message(message.from_user.id,mes,reply_markup=markup) 
             
+        if 'change data' in message.data:
+            markup=types.InlineKeyboardMarkup()
+            markup.add(types.InlineKeyboardButton(text='Изменить номер телефона',callback_data='changes,phone'))
+            markup.add(types.InlineKeyboardButton(text='Изменить имя',callback_data='changes,name')) 
+            markup.add(types.InlineKeyboardButton(text='Изменить город',callback_data='changes,city'))
+            markup.add(types.InlineKeyboardButton(text='Изменить категорию услуг',callback_data='changes,category'))
+
+            f=bot.send_message(message.from_user.id,'Что вы хотите изменить? Нажмите на соответствуюущую кнопку🔽',reply_markup=markup)
+        if 'changes' in message.data:
+            def change_data(message,do):
+                try:
+                    sql_query('UPDATE workers SET {}={} WHERE tid={} '.format(do,to_base(message.text),to_base(message.from_user.id)))
+                    bot.send_message(message.from_user.id,'Успешно',reply_markup=types.ReplyKeyboardRemove())
+                except Exception as e:
+                    print(e)
+            f=False
+            do=message.data.split(',')[1]
+            if do=='city':
+                f=bot.send_message(message.from_user.id,'Выбери свой город ниже🔽',reply_markup=reply_city())
+            elif do=='category':
+                f=bot.send_message(message.from_user.id,'Выбери категорию город ниже🔽',reply_markup=config.get_cat())
+
+            else:
+                
+                rep={
+                    'name':'Свое имя',
+                    'phone':'Свой номер'
+                }
+                f=bot.send_message(message.from_user.id,'Напиши мне {} '.format(rep[do]),reply_markup=types.ReplyKeyboardRemove())
+            bot.register_next_step_handler(f,lambda message:change_data(message,do))
 
 
     bot.polling(none_stop=True)

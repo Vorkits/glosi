@@ -14,11 +14,17 @@ work_message="""
 
 Скорее регистрируйся и получай новые заявки.
     """
+ab=['Юридические услуги','Бухгалтерские услуги💰','Брокерские услуги📈']
+
 def get_categoryes():
-    ab=['Юридические услуги','Бухгалтерские услуги💰','Брокерские услуги📈']
-    markup=types.InlineKeyboardMarkup(row_width=3)
+    markup=types.InlineKeyboardMarkup()
     for i in ab:
         markup.add(types.InlineKeyboardButton(text=i,callback_data=i+'category'))
+    return markup
+def get_cat():
+    markup=types.ReplyKeyboardMarkup()
+    for i in ab:
+        markup.add(types.InlineKeyboardButton(i))
     return markup
 def sql_query(sql):
     f=''

@@ -34,7 +34,7 @@ def sql_query(sql):
 
 def reply_city():
     markup=types.ReplyKeyboardMarkup(one_time_keyboard = True)
-    cities=['Алматы','Астана(Нур-Султан)','Караганда','Актау','Шымкент','Лругой']
+    cities=['Алматы','Астана(Нур-Султан)','Караганда','Актау','Шымкент','Другой']
     for i in cities:
         markup.add(i)
     return markup
@@ -144,8 +144,30 @@ def start_bot(config):
             mes='Заявка отменена, чтобы разместить ее снова, нажмите кнопку ниже🔽'
             markup=types.InlineKeyboardMarkup()
             markup.add(types.InlineKeyboardButton(text='Разместить заявку еще раз',callback_data='place order'))
-            markup.add(types.InlineKeyboardButton(text='Изменить личные данные',callback_data='change personal')) 
+            markup.add(types.InlineKeyboardButton(text='Изменить личные данные',callback_data='change personal'))
+            markup.add(types.InlineKeyboardButton(text='Подписаться на наши соц-сети',callback_data='socset'))
+            markup.add(types.InlineKeyboardButton(text='Стать исполнителем',callback_data='ispo')) 
             f=bot.send_message(message.from_user.id,mes,reply_markup=markup)
+            
+        if 'socset' in message.data:
+            mes='Текст с соц-сетями'
+            markup=types.InlineKeyboardMarkup()
+            markup.add(types.InlineKeyboardButton(text='Разместить заявку еще раз',callback_data='place order'))
+            markup.add(types.InlineKeyboardButton(text='Изменить личные данные',callback_data='change personal'))
+            markup.add(types.InlineKeyboardButton(text='Подписаться на наши соц-сети',callback_data='socset'))
+            markup.add(types.InlineKeyboardButton(text='Стать исполнителем',callback_data='ispo')) 
+            f=bot.send_message(message.from_user.id,mes,reply_markup=markup)
+        if 'ispo' in message.data:
+            mes='Чтобы стать исполнителем, напишите этуму боту- @glosi_work_bot'
+            markup=types.InlineKeyboardMarkup()
+            markup.add(types.InlineKeyboardButton(text='Разместить заявку еще раз',callback_data='place order'))
+            markup.add(types.InlineKeyboardButton(text='Изменить личные данные',callback_data='change personal'))
+            markup.add(types.InlineKeyboardButton(text='Подписаться на наши соц-сети',callback_data='socset'))
+            markup.add(types.InlineKeyboardButton(text='Стать исполнителем',callback_data='ispo')) 
+            f=bot.send_message(message.from_user.id,mes,reply_markup=markup)
+            
+
+        
         if 'plae' in message.data and message.from_user.id in zakazi:
             mes='Заявка отправленна исполнителям, они в кратчайшее время свяжутся с вами.\nСпасибо что выбрали нас!'
             markup=types.InlineKeyboardMarkup()
@@ -165,6 +187,8 @@ def start_bot(config):
             rstr=id_generator()
             markup=types.InlineKeyboardMarkup()
             markup.add(types.InlineKeyboardButton(text='Просмотреть контакты',callback_data='show,{}'.format(rstr)))
+            markup.add(types.InlineKeyboardButton(text='Изменить личные данные',callback_data='change data'))
+
             print(sq)
             data='{},{},{},{},{}'.format(city,name,phone,message.from_user.id,zakazi[message.from_user.id]['description'])
             sql_query("""INSERT INTO orders VALUES({},{},{},{},{})""".format(to_base(rstr),to_base(message.from_user.id),to_base('{}'),to_base(data),0))

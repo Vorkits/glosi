@@ -32,10 +32,11 @@ def feedbacks():
             markup.add(types.InlineKeyboardButton(text=data[0],callback_data='feed-{}'.format(data[1])))
         markup.add(types.InlineKeyboardButton(text='Ни с кем из них',callback_data='feed-not'))
         bot.send_message(i[1],'Выберите исполнителя с которым вы начали работу,если хотите поставить отзыв ему.',reply_markup=markup)
+    sql('UPDATE orders SET used=1 WHERE used=0')
 t =  threading.Thread(target=start)
 t.start()
 b =  threading.Thread(target=start2)
 b.start()
-c =  threading.Thread(target=feedbacks)
-c.start()
+# c =  threading.Thread(target=feedbacks)
+# c.start()
 
