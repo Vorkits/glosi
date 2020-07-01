@@ -32,7 +32,7 @@ def sql_query(sql):
 
 def reply_city():
     markup=types.ReplyKeyboardMarkup(one_time_keyboard = True)
-    cities=['Алматы','Астана(Нур-Султан)','Караганда','Актау','Шымкент','Лругой']
+    cities=['Алматы','Астана(Нур-Султан)','Караганда','Актау','Шымкент','Другой']
     for i in cities:
         markup.add(i)
     return markup
