@@ -113,7 +113,7 @@ def start_bot(config):
                 try:
                     sql_query('UPDATE users SET {}={} WHERE tid={} '.format(do,to_base(message.text),to_base(message.from_user.id)))
                     markup=types.InlineKeyboardMarkup()
-                     markup.add(types.InlineKeyboardButton(text='Разместить заявку еще раз',callback_data='place order'))
+                    markup.add(types.InlineKeyboardButton(text='Разместить заявку еще раз',callback_data='place order'))
                     markup.add(types.InlineKeyboardButton(text='Изменить личные данные',callback_data='change personal'))
                     markup.add(types.InlineKeyboardButton(text='Подписаться на наши соц-сети',callback_data='socset'))
                     markup.add(types.InlineKeyboardButton(text='Стать исполнителем',callback_data='ispo')) 
