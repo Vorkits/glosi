@@ -165,7 +165,11 @@ def start_bot(config):
             def change_data(message,do):
                 try:
                     sql_query('UPDATE workers SET {}={} WHERE tid={} '.format(do,to_base(message.text),to_base(message.from_user.id)))
-                    bot.send_message(message.from_user.id,'Успешно',reply_markup=types.ReplyKeyboardRemove())
+                    markup=types.InlineKeyboardMarkup()
+                    markup.add(types.InlineKeyboardButton(text='Изменить личные данные',callback_data='change data'))
+                    markup.add(types.InlineKeyboardButton(text='Наши соц-сети',callback_data='socset'))
+                    markup.add(types.InlineKeyboardButton(text='Оставить заявку',callback_data='ispo'))
+                    bot.send_message(message.from_user.id,'Успешно',reply_markup=markup)
                 except Exception as e:
                     print(e)
             f=False
