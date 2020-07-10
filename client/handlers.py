@@ -135,6 +135,12 @@ def start_bot(config):
 
         if 'category' in message.data:
             cat=message.data.replace('category','')
+            bot.send_message(message.from_user.id,'Выберите подкатегорию',reply_markup=config.get_ff(cat))
+            # zakazi[message.from_user.id]={'category':cat,'price':'','description':''}
+            # f=bot.send_message(message.from_user.id,'Опишите, какая вам нужна услуга🛠',reply_markup=types.ReplyKeyboardRemove())
+            # bot.register_next_step_handler(f,desc_price)
+        if 'ctgrt' in message.data:
+            cat=message.data.replace('ctgrt','')
             zakazi[message.from_user.id]={'category':cat,'price':'','description':''}
             f=bot.send_message(message.from_user.id,'Опишите, какая вам нужна услуга🛠',reply_markup=types.ReplyKeyboardRemove())
             bot.register_next_step_handler(f,desc_price)

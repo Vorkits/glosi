@@ -196,7 +196,7 @@ def start_bot(config):
             # users.pop(message.from_user.username,1)
             m=bot.send_message(message.from_user.id, mes,reply_markup=config.get_ff(cat))
         if 'ctadd' in message.data:
-            cat=message.data.replace('csd','')
+            cat=message.data.replace('ctadd','')
 
             mes='Подписка на категорию оформленна.'
             markup=types.InlineKeyboardMarkup()
