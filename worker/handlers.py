@@ -174,8 +174,14 @@ def start_bot(config):
             f=bot.send_message(message.from_user.id,'Что вы хотите изменить? Нажмите на соответствуюущую кнопку🔽',reply_markup=markup)
         
         if 'podpiski' in message.data:
-            sq=sql_query('SELECT * FROM workers WHERE tid={}'.format(to_base(message.from_user.id)))
+            sq=sql_query('SELECT category FROM workers WHERE tid={}'.format(to_base(message.from_user.id)))
             print(sq)
+            markup=types.InlineKeyboardMarkup()
+            markup.add(types.InlineKeyboardButton(text='Добавить категорию',callback_data='addcat'))
+            mes='Категории на которые вы подписаны-'
+            for i in sq:
+                mes+='\n'+i[0]
+            bot.send_message(message.from_user.id,mes,reply_markup=markup)
         
         if 'changes' in message.data:
             def change_data(message,do):
