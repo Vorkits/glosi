@@ -97,16 +97,24 @@ def start_bot(config):
 
         if 'category' in message.data and message.from_user.id in users:
             cat=message.data.replace('category','')
+            bot.send_message(message.from_user.id,'Выбери под-категорию',reply_markup=config.get_dd(cat))
+            # users[message.from_user.id]['category']=cat
+            # markup=types.InlineKeyboardMarkup()
+            # markup.add(types.InlineKeyboardButton(text='Согласен',callback_data='personal'))
+            # f=bot.send_message(message.from_user.id,'Согласны ли вы на обработку ваших персональных данных?',reply_markup=markup)
+        
+        if 'ctgrt' in message.data and message.from_user.id in users:
+            cat=message.data.replace('ctgrt','')
             users[message.from_user.id]['category']=cat
             markup=types.InlineKeyboardMarkup()
             markup.add(types.InlineKeyboardButton(text='Согласен',callback_data='personal'))
             f=bot.send_message(message.from_user.id,'Согласны ли вы на обработку ваших персональных данных?',reply_markup=markup)
-            
         if 'personal' in message.data and message.from_user.id in users :
             markup=types.InlineKeyboardMarkup()
             
             sql_query('INSERT INTO workers (name,phone,city,category,username,tid) VALUES ({},{},{},{},{},{})'.format(to_base(users[message.from_user.id]['name']),to_base(users[message.from_user.id]['phone']),to_base(users[message.from_user.id]['city']),to_base(users[message.from_user.id]['category']),to_base(message.from_user.id),to_base(message.from_user.id)))
             markup.add(types.InlineKeyboardButton(text='Изменить личные данные',callback_data='change data'))
+            markup.add(types.InlineKeyboardButton(text='Мои подписки',callback_data='podpiski'))
             markup.add(types.InlineKeyboardButton(text='Наши соц-сети',callback_data='socset'))
             markup.add(types.InlineKeyboardButton(text='Оставить заявку',callback_data='ispo'))
 
@@ -117,6 +125,8 @@ def start_bot(config):
             mes='Текст с соц-сетями'
             markup=types.InlineKeyboardMarkup()
             markup.add(types.InlineKeyboardButton(text='Изменить личные данные',callback_data='change data'))
+            markup.add(types.InlineKeyboardButton(text='Мои подписки',callback_data='podpiski'))
+
             markup.add(types.InlineKeyboardButton(text='Наши соц-сети',callback_data='socset'))
             markup.add(types.InlineKeyboardButton(text='Оставить заявку',callback_data='ispo'))
             f=bot.send_message(message.from_user.id,mes)
@@ -124,6 +134,8 @@ def start_bot(config):
             mes='Чтобы стать заказчиком, напишите этуму боту- @Glosi_bot'
             markup=types.InlineKeyboardMarkup()
             markup.add(types.InlineKeyboardButton(text='Изменить личные данные',callback_data='change data'))
+            markup.add(types.InlineKeyboardButton(text='Мои подписки',callback_data='podpiski'))
+
             markup.add(types.InlineKeyboardButton(text='Наши соц-сети',callback_data='socset'))
             markup.add(types.InlineKeyboardButton(text='Оставить заявку',callback_data='ispo'))
             f=bot.send_message(message.from_user.id,mes,reply_markup=markup)
@@ -158,15 +170,21 @@ def start_bot(config):
             markup.add(types.InlineKeyboardButton(text='Изменить номер телефона',callback_data='changes,phone'))
             markup.add(types.InlineKeyboardButton(text='Изменить имя',callback_data='changes,name')) 
             markup.add(types.InlineKeyboardButton(text='Изменить город',callback_data='changes,city'))
-            markup.add(types.InlineKeyboardButton(text='Изменить категорию услуг',callback_data='changes,category'))
 
             f=bot.send_message(message.from_user.id,'Что вы хотите изменить? Нажмите на соответствуюущую кнопку🔽',reply_markup=markup)
+        
+        if 'podpiski' in message.data:
+            sq=sql_query('SELECT * FROM workers WHERE tid={}'.format(to_base(message.from_user.id)))
+            print(sq)
+        
         if 'changes' in message.data:
             def change_data(message,do):
                 try:
                     sql_query('UPDATE workers SET {}={} WHERE tid={} '.format(do,to_base(message.text),to_base(message.from_user.id)))
                     markup=types.InlineKeyboardMarkup()
                     markup.add(types.InlineKeyboardButton(text='Изменить личные данные',callback_data='change data'))
+                    markup.add(types.InlineKeyboardButton(text='Мои подписки',callback_data='podpiski'))
+
                     markup.add(types.InlineKeyboardButton(text='Наши соц-сети',callback_data='socset'))
                     markup.add(types.InlineKeyboardButton(text='Оставить заявку',callback_data='ispo'))
                     bot.send_message(message.from_user.id,'Успешно',reply_markup=markup)
