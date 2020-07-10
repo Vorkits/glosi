@@ -22,6 +22,8 @@ def get_dd(cat):
     markup=types.InlineKeyboardMarkup()
     for i in dd[cat]:
         markup.add(types.InlineKeyboardButton(text=i,callback_data=i+'ctgrt'))
+    return markup
+
 def get_ff(cat):
     markup=types.InlineKeyboardMarkup()
     for i in dd[cat]:
