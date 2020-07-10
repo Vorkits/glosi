@@ -97,6 +97,7 @@ def start_bot(config):
 
         if 'category' in message.data and message.from_user.id in users:
             cat=message.data.replace('category','')
+            print(cat)
             bot.send_message(message.from_user.id,'Выбери под-категорию',reply_markup=config.get_dd(cat))
             # users[message.from_user.id]['category']=cat
             # markup=types.InlineKeyboardMarkup()
