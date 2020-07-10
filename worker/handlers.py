@@ -183,6 +183,33 @@ def start_bot(config):
                 mes+='\n'+i[0]
             bot.send_message(message.from_user.id,mes,reply_markup=markup)
         
+        if 'addcat' in message.data:
+            mes='Выберите категорию по которой хотите получать заказы'
+            # users.pop(message.from_user.username,1)
+            m=bot.send_message(message.from_user.id, mes,reply_markup=config.get_cat2())
+        
+        if 'csd' in message.data:
+            cat=message.data.replace('csd','')
+
+            mes='Выберите подкатегорию'
+            # users.pop(message.from_user.username,1)
+            m=bot.send_message(message.from_user.id, mes,reply_markup=config.get_ff(cat))
+        if 'ctadd' in message.data:
+            cat=message.data.replace('csd','')
+
+            mes='Подписка на категорию оформленна.'
+            markup=types.InlineKeyboardMarkup()
+            markup.add(types.InlineKeyboardButton(text='Изменить личные данные',callback_data='change data'))
+            markup.add(types.InlineKeyboardButton(text='Мои подписки',callback_data='podpiski'))
+            sq=sql_query('SELECT * FROM workers WHERE tid={}'.format(to_base(message.from_user.id)))
+            sq=sq[0]
+            print(sq)
+            # sql_query('INSERT INTO workers (name,phone,city,category,username,tid) VALUES ({},{},{},{},{},{})'.format(to_base(users[message.from_user.id]['name']),to_base(users[message.from_user.id]['phone']),to_base(users[message.from_user.id]['city']),to_base(users[message.from_user.id]['category']),to_base(message.from_user.id),to_base(message.from_user.id)))
+            markup.add(types.InlineKeyboardButton(text='Наши соц-сети',callback_data='socset'))
+            markup.add(types.InlineKeyboardButton(text='Оставить заявку',callback_data='ispo'))
+            # users.pop(message.from_user.username,1)
+            m=bot.send_message(message.from_user.id, mes,reply_markup=markup)
+        
         if 'changes' in message.data:
             def change_data(message,do):
                 try:

@@ -22,11 +22,21 @@ def get_dd(cat):
     markup=types.InlineKeyboardMarkup()
     for i in dd[cat]:
         markup.add(types.InlineKeyboardButton(text=i,callback_data=i+'ctgrt'))
+def get_ff(cat):
+    markup=types.InlineKeyboardMarkup()
+    for i in dd[cat]:
+        markup.add(types.InlineKeyboardButton(text=i,callback_data=i+'ctadd'))
     return markup
 def get_categoryes():
     markup=types.InlineKeyboardMarkup()
     for i in ab:
         markup.add(types.InlineKeyboardButton(text=i,callback_data=i+'category'))
+    return markup
+
+def get_cat2():
+    markup=types.InlineKeyboardMarkup()
+    for i in ab:
+        markup.add(types.InlineKeyboardButton(text=i,callback_data=i+'csd'))
     return markup
 def get_cat():
     markup=types.ReplyKeyboardMarkup()
