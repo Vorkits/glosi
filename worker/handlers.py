@@ -179,7 +179,7 @@ def start_bot(config):
             print(sq)
             markup=types.InlineKeyboardMarkup()
             markup.add(types.InlineKeyboardButton(text='Добавить категорию',callback_data='addcat'))
-            markup.add(types.InlineKeyboardButton(text='Добавить категорию',callback_data='deletecat'))
+            markup.add(types.InlineKeyboardButton(text='Удалить категорию',callback_data='deletecat'))
 
             mes='Категории на которые вы подписаны-'
             for i in sq:
