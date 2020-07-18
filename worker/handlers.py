@@ -179,11 +179,29 @@ def start_bot(config):
             print(sq)
             markup=types.InlineKeyboardMarkup()
             markup.add(types.InlineKeyboardButton(text='Добавить категорию',callback_data='addcat'))
+            markup.add(types.InlineKeyboardButton(text='Добавить категорию',callback_data='deletecat'))
+
             mes='Категории на которые вы подписаны-'
             for i in sq:
                 mes+='\n'+i[0]
             bot.send_message(message.from_user.id,mes,reply_markup=markup)
-        
+        if 'deletecat' in message.data:
+            sq=sql_query('SELECT category FROM workers WHERE tid={}'.format(to_base(message.from_user.id)))
+            markup=types.InlineKeyboardMarkup()
+            for i in sq:
+                markup.add(types.InlineKeyboardButton(text=i[0],callback_data='axz'+i[0]))
+                
+            mes='Выберите подписку от которой хотите отказаться ниже'
+
+            bot.send_message(message.from_user.id,mes,reply_markup=markup)
+        if 'axz' in message.data:
+            cat=message.data.replace('axz','')
+            sq=sql_query('DELETE FROM workers WHERE tid={} AND category={}'.format(to_base(message.from_user.id),to_base(cat)))
+            mes='Подписка успешно отменена'
+            bot.send_message(message.from_user.id,mes)
+
+
+
         if 'addcat' in message.data:
             mes='Выберите категорию по которой хотите получать заказы'
             # users.pop(message.from_user.username,1)
