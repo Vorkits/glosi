@@ -188,12 +188,23 @@ def start_bot(config):
         if 'deletecat' in message.data:
             sq=sql_query('SELECT category FROM workers WHERE tid={}'.format(to_base(message.from_user.id)))
             markup=types.InlineKeyboardMarkup()
-            for i in sq:
-                markup.add(types.InlineKeyboardButton(text=i[0],callback_data='axz'+i[0]))
-                
-            mes='Выберите подписку от которой хотите отказаться ниже'
+            if len(sq)>1:
+                for i in sq:
+                    markup.add(types.InlineKeyboardButton(text=i[0],callback_data='axz'+i[0]))
+                    
+                mes='Выберите подписку от которой хотите отказаться ниже'
 
-            bot.send_message(message.from_user.id,mes,reply_markup=markup)
+                bot.send_message(message.from_user.id,mes,reply_markup=markup)
+            else:
+                markup=types.InlineKeyboardMarkup()
+                markup.add(types.InlineKeyboardButton(text='Изменить личные данные',callback_data='change data'))
+                markup.add(types.InlineKeyboardButton(text='Мои подписки',callback_data='podpiski'))
+
+                markup.add(types.InlineKeyboardButton(text='Наши соц-сети',callback_data='socset'))
+                markup.add(types.InlineKeyboardButton(text='Оставить заявку',callback_data='ispo'))
+                mes='Нельзя отменить единственную подписку'
+
+                bot.send_message(message.from_user.id,mes,reply_markup=markup)
         if 'axz' in message.data:
             cat=message.data.replace('axz','')
             sq=sql_query('DELETE FROM workers WHERE tid={} AND category={}'.format(to_base(message.from_user.id),to_base(cat)))
