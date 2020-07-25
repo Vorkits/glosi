@@ -69,7 +69,7 @@ def start_bot(config):
                 'city':'',
                 'choice':0
             }
-            mes='Приятно познакомиться, {}. Отправь мне свой номер телефона.\n(если вы не хотите, чтобы исполнители связывались с вами по номеру телефона, оставьте поле пустым)'.format(message.text)
+            mes='Приятно познакомиться, {}. Отправь мне свой номер телефона.\n(если вы не хотите, чтобы исполнители связывались с вами по номеру телефона, оставьте "-")'.format(message.text)
             m=bot.send_message(message.from_user.id, mes,reply_markup=types.ReplyKeyboardRemove())
             bot.register_next_step_handler(m,phone_city)
         if message.text=='Оставить заявку-':
