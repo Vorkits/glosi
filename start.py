@@ -4,7 +4,7 @@ import threading
 from telebot import types
 import telebot
 import config as cf
-print('start')
+print('stsart')
 to_base=lambda s:"'"+str(s)+"'"
 bot = telebot.TeleBot('1123182125:AAGSp0qrIbpwo9Je4Lj-zAGA0OwsBq8S7jI')
 
