@@ -10,17 +10,21 @@ bot = telebot.TeleBot('1123182125:AAGSp0qrIbpwo9Je4Lj-zAGA0OwsBq8S7jI')
 
 sql=cf.sql_query
 def start():
-    try:
-        print('s1')
-        worker.start_bot(cf)
-    except:
-        pass
+    while(True):
+        try:
+            print('s1')
+            
+            worker.start_bot(cf)
+        except:
+            pass
 def start2():
     print('s2')
-    try:
-        client.start_bot(cf)
-    except:
-        pass
+    while(True):
+        try:
+            
+            client.start_bot(cf)
+        except:
+            pass
 def feedbacks():
     s=sql('SELECT * FROM orders WHERE used=0')
     for i in s:
