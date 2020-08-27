@@ -48,6 +48,6 @@ t.start()
 print('1',t.isAlive())
 b =  threading.Thread(target=start2)
 b.start()
-
+##
 # c =  threading.Thread(target=feedbacks)
 # c.start()
