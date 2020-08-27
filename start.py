@@ -10,12 +10,17 @@ bot = telebot.TeleBot('1123182125:AAGSp0qrIbpwo9Je4Lj-zAGA0OwsBq8S7jI')
 
 sql=cf.sql_query
 def start():
-    print('s1')
-    worker.start_bot(cf)
+    try:
+        print('s1')
+        worker.start_bot(cf)
+    except:
+        pass
 def start2():
     print('s2')
-
-    client.start_bot(cf)
+    try:
+        client.start_bot(cf)
+    except:
+        pass
 def feedbacks():
     s=sql('SELECT * FROM orders WHERE used=0')
     for i in s:
@@ -33,10 +38,12 @@ def feedbacks():
         markup.add(types.InlineKeyboardButton(text='Ни с кем из них',callback_data='feed-not'))
         bot.send_message(i[1],'Выберите исполнителя с которым вы начали работу,если хотите поставить отзыв ему.',reply_markup=markup)
     sql('UPDATE orders SET used=1 WHERE used=0')
+
 t =  threading.Thread(target=start)
 t.start()
+print('1',t.isAlive())
 b =  threading.Thread(target=start2)
 b.start()
+
 # c =  threading.Thread(target=feedbacks)
 # c.start()
-

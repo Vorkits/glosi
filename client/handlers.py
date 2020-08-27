@@ -205,10 +205,10 @@ def start_bot(config):
             print('show{},{},{},{}'.format(city,name,phone,message.from_user.id))
             mes="""
             Новая заявка
-            
+Категория-{}
 Описание-{}
 Предложенная стоимость-{}
-Город-{}""".format(to_base(zakazi[message.from_user.id]['description']),to_base(zakazi[message.from_user.id]['price']),to_base(city))
+Город-{}""".format(to_base(zakazi[message.from_user.id]['category']),to_base(zakazi[message.from_user.id]['description']),to_base(zakazi[message.from_user.id]['price']),to_base(city))
             used=[]
             for i in sq:
                 
