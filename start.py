@@ -15,16 +15,16 @@ def start():
             print('s1')
             
             worker.start_bot(cf)
-        except:
-            pass
+        except Exception as e:
+            print(e)
 def start2():
     print('s2')
     while(True):
         try:
             
             client.start_bot(cf)
-        except:
-            pass
+        except Exception as e:
+            print(e)
 def feedbacks():
     s=sql('SELECT * FROM orders WHERE used=0')
     for i in s:
