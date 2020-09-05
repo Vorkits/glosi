@@ -3,8 +3,10 @@ from telebot import types
 import psycopg2
 import sqlite3
 conn = sqlite3.connect("mydatabase.db")
-bot = telebot.TeleBot('1123182125:AAGSp0qrIbpwo9Je4Lj-zAGA0OwsBq8S7jI')
+bot = telebot.TeleBot('1123182125:AAFUtW4IPTvH8FE6HAOGsjwUBqNUxrITNiU')
 w_bot = telebot.TeleBot('914404855:AAEoc0ye_05EMpMaD5m43kytpkPhOL54pHQ')
+z_bot = telebot.TeleBot('1256244176:AAF9SCXBlpE7hmN8msBcxKNfmFFDlFTi-Uw')
+
 print('CCCCCLIIIIEEEENNNNTTTTccz')
 import string
 import random
@@ -16,8 +18,8 @@ to_base=lambda s:"'"+str(s)+"'"
 def sql_query(sql):
     f=''
     try:
-        conn = psycopg2.connect(dbname='dbl897lkr3kqj0', user='gyvyzqvrydwlxe', 
-                                password='44826dd7802986c134535b8c9724edbe06185e69c372d144a0f554ad59bdf040', host='ec2-79-125-26-232.eu-west-1.compute.amazonaws.com')
+        conn = psycopg2.connect(dbname='d54hc77c7ckgk6', user='kvaoezemiubyvt', 
+                                password='0bcfdd03a64b944b5b02dae59d5fd8f8ad7368894289a122812eace189d0d481', host='ec2-54-217-213-79.eu-west-1.compute.amazonaws.com')
         conn.autocommit = True
 
         cur = conn.cursor()
@@ -187,6 +189,7 @@ def start_bot(config):
             f=bot.send_message(message.from_user.id,mes,reply_markup=markup)
             
             sq=sql_query('SELECT city,name,phone from users WHERE tid={}'.format(to_base(message.from_user.id)))
+            print(sq)
             city=sq[0][0]
             name=sq[0][1]
             phone=sq[0][2]
@@ -209,6 +212,14 @@ def start_bot(config):
 Описание-{}
 Предложенная стоимость-{}
 Город-{}""".format(to_base(zakazi[message.from_user.id]['category']),to_base(zakazi[message.from_user.id]['description']),to_base(zakazi[message.from_user.id]['price']),to_base(city))
+            ids_admin=['562164620','541382484']
+            mes_dop=mes+"""Имя-{}\nНомер-{}\nСсылка на переписку-[Ссылка](tg://user?id={})""".format(name,phone,message.from_user.id)
+            for i in ids_admin:
+                try:
+                    z_bot.send_message(i,mes_dop,parse_mode="Markdown")
+                except:
+                    pass
+             
             used=[]
             for i in sq:
                 

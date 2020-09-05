@@ -14,8 +14,8 @@ def reply_city():
 def sql_query(sql):
     f=''
     try:
-        conn = psycopg2.connect(dbname='dbl897lkr3kqj0', user='gyvyzqvrydwlxe', 
-                                password='44826dd7802986c134535b8c9724edbe06185e69c372d144a0f554ad59bdf040', host='ec2-79-125-26-232.eu-west-1.compute.amazonaws.com')
+        conn = psycopg2.connect(dbname='d54hc77c7ckgk6', user='kvaoezemiubyvt', 
+                                password='0bcfdd03a64b944b5b02dae59d5fd8f8ad7368894289a122812eace189d0d481', host='ec2-54-217-213-79.eu-west-1.compute.amazonaws.com')
         conn.autocommit = True
 
         cur = conn.cursor()
