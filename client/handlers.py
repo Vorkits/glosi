@@ -1,11 +1,10 @@
 import telebot
 from telebot import types
 import psycopg2
-import sqlite3
-conn = sqlite3.connect("mydatabase.db")
 bot = telebot.TeleBot('1123182125:AAFUtW4IPTvH8FE6HAOGsjwUBqNUxrITNiU')
 w_bot = telebot.TeleBot('914404855:AAEoc0ye_05EMpMaD5m43kytpkPhOL54pHQ')
 z_bot = telebot.TeleBot('1256244176:AAF9SCXBlpE7hmN8msBcxKNfmFFDlFTi-Uw')
+from datetime import datetime
 
 print('CCCCCLIIIIEEEENNNNTTTTccz')
 import string
@@ -54,7 +53,10 @@ def start_bot(config):
     def text(message):
         def city_finish(message):
             users[message.from_user.id]['city']=message.text
-            sql_query('INSERT INTO users (name,phone,city,username,tid) VALUES ({},{},{},{},{})'.format(to_base(users[message.from_user.id]['name']),to_base(users[message.from_user.id]['phone']),to_base(users[message.from_user.id]['city']),to_base(message.from_user.username),to_base(message.from_user.id)))
+            now = datetime.now() # current date and time
+            date_time = now.strftime("%m.%d.%Y")
+
+            sql_query('INSERT INTO users (name,phone,city,username,tid,data) VALUES ({},{},{},{},{},{})'.format(to_base(users[message.from_user.id]['name']),to_base(users[message.from_user.id]['phone']),to_base(users[message.from_user.id]['city']),to_base(message.from_user.username),to_base(message.from_user.id),to_base(date_time)))
             mes='Теперь вы можете выбрать категорию в которой вам нужно получить услугу🛠'
             users.pop(message.from_user.id,1)
             m=bot.send_message(message.from_user.id, mes,reply_markup=config.get_categoryes())

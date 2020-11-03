@@ -1,6 +1,7 @@
 import telebot
 from telebot import types
 import psycopg2
+from datetime import datetime
 bot = telebot.TeleBot('914404855:AAEoc0ye_05EMpMaD5m43kytpkPhOL54pHQ')
 users={}
 zakazi={}
@@ -112,8 +113,9 @@ def start_bot(config):
             f=bot.send_message(message.from_user.id,'Согласны ли вы на обработку ваших персональных данных?',reply_markup=markup)
         if 'personal' in message.data and message.from_user.id in users :
             markup=types.InlineKeyboardMarkup()
-            
-            sql_query('INSERT INTO workers (name,phone,city,category,username,tid) VALUES ({},{},{},{},{},{})'.format(to_base(users[message.from_user.id]['name']),to_base(users[message.from_user.id]['phone']),to_base(users[message.from_user.id]['city']),to_base(users[message.from_user.id]['category']),to_base(message.from_user.id),to_base(message.from_user.id)))
+            now = datetime.now() # current date and time
+            date_time = now.strftime("%m.%d.%Y")
+            sql_query('INSERT INTO workers (name,phone,city,category,username,tid,date) VALUES ({},{},{},{},{},{},{})'.format(to_base(users[message.from_user.id]['name']),to_base(users[message.from_user.id]['phone']),to_base(users[message.from_user.id]['city']),to_base(users[message.from_user.id]['category']),to_base(message.from_user.id),to_base(message.from_user.id),to_base(date_time)))
             markup.add(types.InlineKeyboardButton(text='Изменить личные данные',callback_data='change data'))
             markup.add(types.InlineKeyboardButton(text='Мои подписки',callback_data='podpiski'))
             markup.add(types.InlineKeyboardButton(text='Наши соц-сети',callback_data='socset'))
@@ -234,7 +236,9 @@ def start_bot(config):
             sq=sql_query('SELECT * FROM workers WHERE tid={}'.format(to_base(message.from_user.id)))
             sq=sq[0]
             print(sq)
-            sql_query('INSERT INTO workers (name,phone,city,category,username,tid) VALUES ({},{},{},{},{},{})'.format(to_base(sq[1]),to_base(sq[2]),to_base(sq[3]),to_base(cat),to_base(message.from_user.id),to_base(message.from_user.id)))
+            now = datetime.now() # current date and time
+            date_time = now.strftime("%m.%d.%Y")
+            sql_query('INSERT INTO workers (name,phone,city,category,username,tid,date) VALUES ({},{},{},{},{},{},{})'.format(to_base(users[message.from_user.id]['name']),to_base(users[message.from_user.id]['phone']),to_base(users[message.from_user.id]['city']),to_base(users[message.from_user.id]['category']),to_base(message.from_user.id),to_base(message.from_user.id),to_base(date_time)))
             markup.add(types.InlineKeyboardButton(text='Наши соц-сети',callback_data='socset'))
             markup.add(types.InlineKeyboardButton(text='Оставить заявку',callback_data='ispo'))
             # users.pop(message.from_user.username,1)
